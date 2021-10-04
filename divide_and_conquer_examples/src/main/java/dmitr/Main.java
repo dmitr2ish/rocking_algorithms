@@ -1,6 +1,7 @@
 package dmitr;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,12 +30,19 @@ public class Main {
         someArray_2.addAll(someArray);
         someArray_3.addAll(someArray);
         someArray_4.addAll(someArray);
+        System.out.println("ArrayList:");
         System.out.println("Sum of elements: " + sum(someArray));
         System.out.println("Count of elements: " + countElements(someArray_2));
         System.out.println("Max number is: " + findMax(someArray_3));
+
+        int[] arr = new int[]{3, 6, 9, 10};
+        System.out.println("Array:");
+        System.out.println("Sum of elements: " + sum(arr));
+        System.out.println("Count of elements: " + countElements(arr));
+        System.out.println("Max number is: " + findMax(arr));
     }
 
-    //  сумма элементов массива
+    //  сумма элементов списка
     private static int sum(List<Integer> someArray) {
         //  определяем базовый случай
         //  если длина 0, то и сумма 0
@@ -46,7 +54,20 @@ public class Main {
         return sum + sum(someArray);
     }
 
-    //  количество элементов в массиве
+    //  сумма элементов массива
+    private static int sum(int[] someArray) {
+        //  определяем базовый случай
+        //  если длина 0, то и сумма 0
+        if (someArray.length == 0) return 0;
+        //  сохраняем первый элемент в текущем стеке
+        int sum = someArray[0];
+        // сокращаем решение и передаем дальше по стеку
+        int[] temp = new int[someArray.length - 1];
+        System.arraycopy(someArray, 1, temp, 0, temp.length);
+        return sum + sum(temp);
+    }
+
+    //  количество элементов в списке
     private static int countElements(List<Integer> someArray) {
         //  определяем базовый случай
         if (someArray.size() == 0) return 0;
@@ -56,7 +77,18 @@ public class Main {
         return 1 + countElements(someArray);
     }
 
-    //  поиск максимума в массиве
+    //  количество элементов в массиве
+    private static int countElements(int[] someArray) {
+        //  определяем базовый случай
+        if (someArray.length == 0) return 0;
+        //  сокращаем решение
+        int[] temp = new int[someArray.length - 1];
+        System.arraycopy(someArray, 1, temp, 0, temp.length);
+        //  передаем дальше по стеку + 1 за стек
+        return 1 + countElements(temp);
+    }
+
+    //  поиск максимума в списке
     private static int findMax(List<Integer> someArray) {
         //  определяем базовый случай
         if (someArray.size() == 2) return (someArray.get(0) > someArray.get(1)) ? someArray.get(0) : someArray.get(1);
@@ -66,5 +98,18 @@ public class Main {
         someArray.remove(0);
         //  сравниваем с текущим и опускаемся дальше по стеку
         return (max > findMax(someArray)) ? max : findMax(someArray);
+    }
+
+    //  поиск максимума в массиве
+    private static int findMax(int[] someArray) {
+        //  определяем базовый случай
+        if (someArray.length == 2) return (someArray[0] > someArray[1]) ? someArray[0] : someArray[1];
+        //  сохраняем текущий принятый за max, в стеке
+        int max = someArray[0];
+        //  сокращаем решение
+        int[] tempArr = new int[someArray.length - 1];
+        System.arraycopy(someArray, 1, tempArr, 0, tempArr.length);
+        //  сравниваем с текущим и опускаемся дальше по стеку
+        return (max > findMax(tempArr)) ? max : findMax(tempArr);
     }
 }
